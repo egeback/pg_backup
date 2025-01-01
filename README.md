@@ -1,11 +1,9 @@
 # pg_backup
-
-Postgres backup runner
+Postgres backup runner in docker container.
 
 Fork from https://github.com/damoclark/pg_backup/ with added support to upload to S3 bucket.
 
 ## Configuration
-
 ### Build and install
 
 Update docker-compose.yaml_sample and rename to docker-compose.yaml
@@ -14,18 +12,19 @@ Update docker-compose.yaml_sample and rename to docker-compose.yaml
 * Backup location under volumes: ``- ./postgres/:/backup/``
 
 ### Application configuration
-
 Update pg_backup.config_sample and rename to pg_backup.config
 
 ## Build
-
-Build the image through docker compose.
-``docker compose build``
+Build the image through docker compose:
+```
+docker compose build
+```
 
 ## Install
-
-Install image
-``docker compose up -d``
+Install image:
+```
+docker compose up -d
+```
 
 ## Licence
 
