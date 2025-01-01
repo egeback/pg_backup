@@ -1,2 +1,4 @@
 pg_backup.config
 docker-compose.yaml
+build_install.sh
+build.sh
