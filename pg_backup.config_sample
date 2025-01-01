@@ -28,7 +28,7 @@ SCHEMA_ONLY_LIST=""
 ENABLE_CUSTOM_BACKUPS=yes
 
 # Will produce a gzipped plain-format backup if set to "yes"
-ENABLE_PLAIN_BACKUPS=no
+ENABLE_PLAIN_BACKUPS=yes
 
 # Will produce gzipped sql file containing the cluster globals, like users and passwords, if set to "yes"
 ENABLE_GLOBALS_BACKUPS=yes
@@ -48,7 +48,7 @@ WEEKS_TO_KEEP=2
 MONTHS_TO_KEEP=2
 
 #### SETTINGS FOR S3 ####
-S3_BACKUP_ENABLE=yes
+S3_BACKUP_ENABLE=no
 S3_REGION=region
 S3_ACCESS_KEY_ID=
 S3_SECRET_ACCESS_KEY=
