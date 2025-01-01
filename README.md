@@ -2,7 +2,7 @@
 
 Postgres backup runner in docker container.
 
-Fork from https://github.com/damoclark/pg_backup/ as a docker image with added support to upload to S3 bucket. Scheduling is done with [Ofelia a job scheduler](https://github.com/mcuadros/ofelia).
+Fork from [https://github.com/damoclark/pg_backup/](https://github.com/damoclark/pg_backup/) as a docker image with added support to upload to S3 bucket. Scheduling is done with [Ofelia a job scheduler](https://github.com/mcuadros/ofelia).
 
 ## Configuration
 
