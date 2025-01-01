@@ -25,6 +25,7 @@ Build the image through docker compose.
 ## Install
 
 Install image
+``docker compose up -d``
 
 ## Licence
 
