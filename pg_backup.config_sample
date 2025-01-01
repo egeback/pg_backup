@@ -1,0 +1,75 @@
+##############################
+## POSTGRESQL BACKUP CONFIG ##
+##############################
+
+# Optional system user to run backups as.  If the user the script is running as doesn't match this
+# the script terminates.  Leave blank to skip check.
+BACKUP_USER=
+
+# Optional hostname to adhere to pg_hba policies.  Will default to "localhost" if none specified.
+HOSTNAME=
+
+# Optional username to connect to database as.  Will default to "postgres" if none specified.
+USERNAME=
+
+# Optional password to connect to database as.
+POSTGRES_PASSWORD=
+
+# This dir will be created if it doesn't exist.  This must be writable by the user the script is
+# running as.
+BACKUP_DIR=/backup/
+
+# List of strings to match against in database name, separated by space or comma, for which we only
+# wish to keep a backup of the schema, not the data. Any database names which contain any of these
+# values will be considered candidates. (e.g. "system_log" will match "dev_system_log_2010-01")
+SCHEMA_ONLY_LIST=""
+
+# Will produce a custom-format backup if set to "yes"
+ENABLE_CUSTOM_BACKUPS=yes
+
+# Will produce a gzipped plain-format backup if set to "yes"
+ENABLE_PLAIN_BACKUPS=no
+
+# Will produce gzipped sql file containing the cluster globals, like users and passwords, if set to "yes"
+ENABLE_GLOBALS_BACKUPS=yes
+
+#### SETTINGS FOR ROTATED BACKUPS ####
+
+# Which day to take the weekly backup from (1-7 = Monday-Sunday)
+DAY_OF_WEEK_TO_KEEP=7
+
+# Number of days to keep daily backups
+DAYS_TO_KEEP=7
+
+# How many weeks to keep weekly backups
+WEEKS_TO_KEEP=2
+
+# How many months to keep monthly backups
+MONTHS_TO_KEEP=2
+
+#### SETTINGS FOR S3 ####
+S3_BACKUP_ENABLE=yes
+S3_REGION=region
+S3_ACCESS_KEY_ID=
+S3_SECRET_ACCESS_KEY=
+S3_BUCKET=postgres
+S3_PREFIX=backup
+S3_ENDPOINT=
+
+if [ -z "$S3_ENDPOINT" ]; then
+  AWS_ARGS=""
+else
+  AWS_ARGS="--endpoint-url $S3_ENDPOINT"
+fi
+
+
+if [ -n "$S3_ACCESS_KEY_ID" ]; then
+  export AWS_ACCESS_KEY_ID=$S3_ACCESS_KEY_ID
+fi
+if [ -n "$S3_SECRET_ACCESS_KEY" ]; then
+  export AWS_SECRET_ACCESS_KEY=$S3_SECRET_ACCESS_KEY
+fi
+AWS_DEFAULT_REGION=$S3_REGION
+export PGPASSWORD=$POSTGRES_PASSWORD
+
+######################################

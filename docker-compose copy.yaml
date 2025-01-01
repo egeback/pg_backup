@@ -1,0 +1,34 @@
+# this file is here to facilitate development/testing
+# $ docker compose up -d --build --force-recreate
+
+services:
+  ofelia:
+    image: mcuadros/ofelia:latest
+    container_name: ofelia
+    depends_on:
+      - backup
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      TZ: Europe/Stockholm
+
+  backup:
+    build:
+      context: .
+      args:
+        ALPINE_VERSION: '3.21.0'
+    container_name: pg_backup
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.postgres-backup.schedule: "0 0 2 * * *"
+      ofelia.job-exec.postgres-backup.command: "/app/pg_backup_rotated.sh"
+      ofelia.job-exec.postgres-backup.user: "backup_user"
+    environment:
+      TZ: Europe/Stockholm
+      CONFIG_FILE_PATH: /config/pg_backup.config
+    networks:
+      - postgres
+    volumes:
+      - ./pg_backup.config:/config/pg_backup.config
+      - ./postgres/:/backup/
