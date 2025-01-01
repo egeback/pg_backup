@@ -27,8 +27,6 @@ services:
     environment:
       TZ: Europe/Stockholm
       CONFIG_FILE_PATH: /config/pg_backup.config
-    networks:
-      - postgres
     volumes:
       - ./pg_backup.config:/config/pg_backup.config
       - ./postgres/:/backup/
