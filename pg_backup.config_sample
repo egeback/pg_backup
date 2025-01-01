@@ -56,6 +56,8 @@ S3_BUCKET=postgres
 S3_PREFIX=backup
 S3_ENDPOINT=
 
+######################################
+
 if [ -z "$S3_ENDPOINT" ]; then
   AWS_ARGS=""
 else

@@ -1,9 +1,8 @@
 ARG ALPINE_VERSION
-FROM alpine:${ALPINE_VERSION:-3.21.0}
-ARG TARGETARCH
+FROM alpine:${ALPINE_VERSION:-3.21}
 
 RUN apk upgrade --update-cache --available && \
-    apk add openssl postgresql-client openssl aws-cli bash tzdata && \
+    apk add openssl postgresql-client aws-cli bash tzdata && \
     rm -rf /var/cache/apk/*
 
 RUN adduser -D backup_user

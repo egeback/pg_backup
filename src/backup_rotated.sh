@@ -252,23 +252,6 @@ if [ $DAY_OF_WEEK = $DAY_OF_WEEK_TO_KEEP ];
 then
 	# Delete all expired weekly directories
 	find $BACKUP_DIR -maxdepth 1 -mtime +$EXPIRED_DAYS -name "*-weekly" -exec rm -rf '{}' ';'
-
-	# if [ "$S3_BACKUP_ENABLE" = "yes" ];
-	# then
-	# 	sec=$((86400*DAYS_TO_KEEP))
-	# 	date_from_remove=$(date -d "@$(($(date +%s) - sec))" +%Y-%m-%d)
-	# 	backups_query="Contents[?LastModified<='${date_from_remove} 00:00:00' && contains(Key,'-weekly')].{Key: Key}"
-
-	# 	echo "Removing old backups from $S3_BUCKET..."
-	# 	aws $aws_args s3api list-objects \
-	# 		--bucket "${S3_BUCKET}" \
-	# 		--prefix "${S3_PREFIX}" \
-	# 		--query "${backups_query}" \
-	# 		--output text \
-	# 		| xargs -n1 -t -I 'KEY' aws $aws_args s3 rm s3://"${S3_BUCKET}"/'KEY'
-	# 	echo "Removal complete."
-	# 	# echo "not completed weekly delete"
-	# fi
 	        	
 	perform_backups "-weekly"
 	upload_backups
@@ -281,23 +264,6 @@ fi
 
 # Delete daily backups 7 days old or more
 find $BACKUP_DIR -maxdepth 1 -mtime +$DAYS_TO_KEEP -name "*-daily" -exec rm -rf '{}' ';'
-
-# if [ "$S3_BACKUP_ENABLE" = "yes" ];
-# then
-# 	sec=$((86400*DAYS_TO_KEEP))
-# 	date_from_remove=$(date -d "@$(($(date +%s) - sec))" +%Y-%m-%d)
-# 	backups_query="Contents[?LastModified<='${date_from_remove} 00:00:00' && contains(Key,'-daily')].{Key: Key}"
-
-# 	echo "Removing old backups from $S3_BUCKET..."
-# 	aws $aws_args s3api list-objects \
-# 		--bucket "${S3_BUCKET}" \
-# 		--prefix "${S3_PREFIX}" \
-# 		--query "${backups_query}" \
-# 		--output text \
-# 		| xargs -n1 -t -I 'KEY' aws $aws_args s3 rm s3://"${S3_BUCKET}"/'KEY'
-# 	echo "Removal complete."
-# 	# echo "not completed daily delete"
-# fi
 
 perform_backups "-daily"
 upload_backups
