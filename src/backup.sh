@@ -67,6 +67,23 @@ if [ ! $USERNAME ]; then
 	USERNAME="postgres"
 fi;
 
+if [ -z "$S3_BACKUP_ENABLE" ]; then
+	S3_BACKUP_ENABLE=no
+else
+	if [ -z "$S3_BUCKET" ]; then
+		echo "You need to set the S3_BUCKET environment variable."
+		exit 1
+	fi
+
+	if [ -z "$S3_ENDPOINT" ]; then
+		AWS_ARGS=""
+	else
+		AWS_ARGS="--endpoint-url $S3_ENDPOINT"
+	fi
+
+	
+fi
+
 
 ###########################
 #### START THE BACKUPS ####
