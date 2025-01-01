@@ -7,7 +7,7 @@ Fork from https://github.com/damoclark/pg_backup/ as a docker image with added s
 ### Build and install
 Update docker-compose.yaml_sample and rename to docker-compose.yaml
 
-* Backup schedule: ``ofelia.job-exec.postgres-backup.schedule: "0 0 2 * * *"``. [Scheduling format documentation.](https://godoc.org/github.com/robfig/cronhttps:/)
+* Backup schedule: ``ofelia.job-exec.postgres-backup.schedule: "0 0 2 * * *"``. [Scheduling format documentation.](https://godoc.org/github.com/robfig/cron)
 * Backup location under volumes: ``- ./postgres/:/backup/``
 
 ### Application configuration
