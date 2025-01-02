@@ -197,7 +197,7 @@ function upload_backups()
 		############################
 		if [ "$S3_BACKUP_ENABLE" = "yes" ];
 		then
-			echo "Uploading dump to $S3_BUCKET"
+			echo "Uploading dump to bucket: $S3_BUCKET"
 			aws $AWS_ARGS s3 cp $FINAL_BACKUP_DIR "s3://${S3_BUCKET}/${S3_PREFIX}/${DEST_FOLDER}" --recursive
 		fi
 	fi
@@ -206,21 +206,22 @@ function upload_backups()
 function cleanup_backups()
 {
 	SUFFIX=$1
-	EXPIRED_DAYS=$2
+	DAYS=$2
 
 	if [ "$S3_BACKUP_ENABLE" = "yes" ];
 	then
-		sec=$((86400*EXPIRED_DAYS))
+		sec=$((86400*DAYS))
 		date_from_remove=$(date -d "@$(($(date +%s) - sec))" +%Y-%m-%d)
 		backups_query="Contents[?LastModified<='${date_from_remove} 00:00:00' && contains(Key,'$SUFFIX')].{Key: Key}"
 
-		echo "Removing old $SUFFIX backups from $S3_BUCKET, keeping $EXPIRED_DAYS days."
+		echo "Removing old $SUFFIX backups from $S3_BUCKET, keeping $DAYS days." # Query: ${backups_query}
 		aws $AWS_ARGS s3api list-objects \
 			--bucket "${S3_BUCKET}" \
 			--prefix "${S3_PREFIX}" \
 			--query "${backups_query}" \
 			--output text \
 			| xargs -n1 -t -I 'KEY' aws $AWS_ARGS s3 rm s3://"${S3_BUCKET}"/'KEY'
+
 		echo "Removal complete."
 	fi
 }
@@ -255,6 +256,7 @@ then
 	        	
 	perform_backups "-weekly"
 	upload_backups
+	echo "Expired days: $EXPIRED_DAYS"
 	cleanup_backups "-weekly" $EXPIRED_DAYS
 	
 	exit 0;
@@ -267,4 +269,4 @@ find $BACKUP_DIR -maxdepth 1 -mtime +$DAYS_TO_KEEP -name "*-daily" -exec rm -rf 
 
 perform_backups "-daily"
 upload_backups
-cleanup_backups "-daily"
+cleanup_backups "-daily" +$DAYS_TO_KEEP
