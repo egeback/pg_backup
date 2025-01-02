@@ -22,7 +22,7 @@ services:
     labels:
       ofelia.enabled: "true"
       ofelia.job-exec.postgres-backup.schedule: "0 0 2 * * *"
-      ofelia.job-exec.postgres-backup.command: "/app/pg_backup_rotated.sh"
+      ofelia.job-exec.postgres-backup.command: "/app/backup_rotated.sh"
       ofelia.job-exec.postgres-backup.user: "backup_user"
     environment:
       TZ: Europe/Stockholm
